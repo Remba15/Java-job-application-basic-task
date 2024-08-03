@@ -11,11 +11,12 @@ public class MoneyCounter {
 	private static List<Integer> valuesList = new ArrayList<Integer>();
 	
 	public static void main(String[] args){
-		count();
-		printTotalCount();
+		MoneyCounter moneyCounter = new MoneyCounter();
+		moneyCounter.count();
+		moneyCounter.printTotalCount();
 	}
 	
-	private static void count(){
+	private void count(){
 		System.out.println("Searching for money files in \"F:\\data\"");
 		
 		List<String> csvFiles = returnCSVFileList(csvRootFolder);
@@ -25,7 +26,7 @@ public class MoneyCounter {
 		}
 	}
 	
-	private static List<String> returnCSVFileList(String rootFolder) {
+	private List<String> returnCSVFileList(String rootFolder) {
 		
 		List<String> csvFiles = new ArrayList<String>();
 		File folder = new File(rootFolder);
@@ -42,7 +43,7 @@ public class MoneyCounter {
 		return csvFiles;
 	}
 	
-	private static void printCounts(String fileName){
+	private void printCounts(String fileName){
 		List<List<String>> csvItems = new ArrayList<>();
 		
 		try(Scanner scan = new Scanner(new File(csvRootFolder + "\\" + fileName))){
@@ -60,7 +61,7 @@ public class MoneyCounter {
 		printValues(csvItems);
 	}
 	
-	private static List<String> getRowItem(String line) {
+	private List<String> getRowItem(String line) {
 		List<String> items = new ArrayList<String>();
 		try (Scanner rowScan = new Scanner(line)){
 			rowScan.useDelimiter(",");
@@ -72,7 +73,7 @@ public class MoneyCounter {
 		return items;
 	}
 	
-	private static void printValues(List<List<String>> items) {
+	private void printValues(List<List<String>> items) {
 		List<String> currencies = new ArrayList<String>();
 		List<Integer> values = new ArrayList<Integer>();
 		int sum = 0;
@@ -105,7 +106,7 @@ public class MoneyCounter {
 		}
 	}
 	
-	private static void printTotalCount() {
+	private void printTotalCount() {
 		System.out.println("\nMoney in all countries:");
 		for(int i = 0; i < currencyList.size(); i++) {
 			System.out.printf("  %s: %d\n", currencyList.get(i), valuesList.get(i));
