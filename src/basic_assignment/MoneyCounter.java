@@ -1,3 +1,4 @@
+package basic_assignment;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -5,9 +6,9 @@ import java.io.File;
 
 
 public class MoneyCounter {
-	public static String CSVRootFolder = "F:\\data";
-	public static List<String> currencyList = new ArrayList<String>();
-	public static List<Integer> valuesList = new ArrayList<Integer>();
+	private static String csvRootFolder = "F:\\data";
+	private static List<String> currencyList = new ArrayList<String>();
+	private static List<Integer> valuesList = new ArrayList<Integer>();
 	
 	public static void main(String[] args){
 		count();
@@ -17,36 +18,36 @@ public class MoneyCounter {
 	private static void count(){
 		System.out.println("Searching for money files in \"F:\\data\"");
 		
-		ArrayList<String> CSVFiles = returnCSVFileList(CSVRootFolder);
-		for(int i = 0; i < CSVFiles.size(); i++) {
-			System.out.println("\n\"" + CSVFiles.get(i) + "\"" + " found");
-			printCounts(CSVFiles.get(i));
+		List<String> csvFiles = returnCSVFileList(csvRootFolder);
+		for(int i = 0; i < csvFiles.size(); i++) {
+			System.out.println("\n\"" + csvFiles.get(i) + "\"" + " found");
+			printCounts(csvFiles.get(i));
 		}
 	}
 	
-	private static ArrayList<String> returnCSVFileList(String rootFolder) {
+	private static List<String> returnCSVFileList(String rootFolder) {
 		
-		ArrayList<String> CSVFiles = new ArrayList<String>();
+		List<String> csvFiles = new ArrayList<String>();
 		File folder = new File(rootFolder);
 		File[] listOfFiles = folder.listFiles();
 		
 		if(listOfFiles != null) {
 			for(int i = 0; i < listOfFiles.length; i++) {
 				if(listOfFiles[i].getName().contains(".csv")) {
-					CSVFiles.add(listOfFiles[i].getName());
+					csvFiles.add(listOfFiles[i].getName());
 				}
 			}
 		}
 		
-		return CSVFiles;
+		return csvFiles;
 	}
 	
 	private static void printCounts(String fileName){
-		List<List<String>> CSVItems = new ArrayList<>();
+		List<List<String>> csvItems = new ArrayList<>();
 		
-		try(Scanner scan = new Scanner(new File(CSVRootFolder + "\\" + fileName))){
+		try(Scanner scan = new Scanner(new File(csvRootFolder + "\\" + fileName))){
 			while (scan.hasNextLine()) {
-				CSVItems.add(getRowItem(scan.nextLine()));
+				csvItems.add(getRowItem(scan.nextLine()));
 			}
 		}
 		catch(Exception e)
@@ -56,7 +57,7 @@ public class MoneyCounter {
 		
 		System.out.println("  Totals by currencies:");
 		
-		printValues(CSVItems);
+		printValues(csvItems);
 	}
 	
 	private static List<String> getRowItem(String line) {
@@ -90,6 +91,7 @@ public class MoneyCounter {
 		
 		for(int i = 0; i < currencies.size(); i++) {
 			System.out.printf("   %s: %d\n", currencies.get(i), values.get(i));
+			
 			if(currencyList.contains(currencies.get(i))) {
 				int index = currencyList.indexOf(currencies.get(i));
 				sum = valuesList.get(index);
