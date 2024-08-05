@@ -6,23 +6,37 @@ import java.io.File;
 
 
 public class MoneyCounter {
-	private static String csvRootFolder = "F:\\data";
 	private static List<String> currencyList = new ArrayList<String>();
 	private static List<Integer> valuesList = new ArrayList<Integer>();
 	
-	public static void main(String[] args){
-		MoneyCounter moneyCounter = new MoneyCounter();
-		moneyCounter.count();
-		moneyCounter.printTotalCount();
+	private String csvRootFolder;
+	
+	public MoneyCounter(String rootFolder) {
+		this.csvRootFolder = rootFolder;
 	}
 	
-	private void count(){
+	public String getRootFolder() {
+		return this.csvRootFolder;
+	}
+	
+	public void setRootFolder(String rootFolder) {
+		this.csvRootFolder = rootFolder;
+	}
+	
+	public void count(){
 		System.out.println("Searching for money files in \"F:\\data\"");
 		
-		List<String> csvFiles = returnCSVFileList(csvRootFolder);
+		List<String> csvFiles = returnCSVFileList(this.csvRootFolder);
 		for(int i = 0; i < csvFiles.size(); i++) {
 			System.out.println("\n\"" + csvFiles.get(i) + "\"" + " found");
 			printCounts(csvFiles.get(i));
+		}
+	}
+	
+	public void printTotalCount() {
+		System.out.println("\nMoney in all countries:");
+		for(int i = 0; i < currencyList.size(); i++) {
+			System.out.printf("  %s: %d\n", currencyList.get(i), valuesList.get(i));
 		}
 	}
 	
@@ -46,7 +60,7 @@ public class MoneyCounter {
 	private void printCounts(String fileName){
 		List<List<String>> csvItems = new ArrayList<>();
 		
-		try(Scanner scan = new Scanner(new File(csvRootFolder + "\\" + fileName))){
+		try(Scanner scan = new Scanner(new File(this.csvRootFolder + "\\" + fileName))){
 			while (scan.hasNextLine()) {
 				csvItems.add(getRowItem(scan.nextLine()));
 			}
@@ -103,13 +117,6 @@ public class MoneyCounter {
 				currencyList.add(currencies.get(i));
 				valuesList.add(values.get(i));
 			}
-		}
-	}
-	
-	private void printTotalCount() {
-		System.out.println("\nMoney in all countries:");
-		for(int i = 0; i < currencyList.size(); i++) {
-			System.out.printf("  %s: %d\n", currencyList.get(i), valuesList.get(i));
 		}
 	}
 	
