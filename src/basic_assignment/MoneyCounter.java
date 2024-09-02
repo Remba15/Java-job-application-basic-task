@@ -7,13 +7,14 @@ import java.io.File;
 
 public class MoneyCounter {
 	
-	private static List<String> currencyList = new ArrayList<String>();
-	private static List<Integer> valuesList = new ArrayList<Integer>();
-	
+	private List<String> currencyList;
+	private List<Integer> valuesList;
 	private String csvRootFolder;
 	
 	public MoneyCounter(String rootFolder) {
 		this.csvRootFolder = rootFolder;
+		this.currencyList = new ArrayList<String>();
+		this.valuesList = new ArrayList<Integer>();
 	}
 	
 	public String getRootFolder() {
@@ -25,9 +26,10 @@ public class MoneyCounter {
 	}
 	
 	public void count(){
-		System.out.println("Searching for money files in \"F:\\data\"");
+		System.out.println("Searching for money files in \"" + this.csvRootFolder + "\"");
 		
 		List<String> csvFiles = returnCSVFileList(this.csvRootFolder);
+		
 		for(int i = 0; i < csvFiles.size(); i++) {
 			System.out.println("\n\"" + csvFiles.get(i) + "\"" + " found");
 			printCounts(csvFiles.get(i));
@@ -39,6 +41,7 @@ public class MoneyCounter {
 		List<String> csvFiles = new ArrayList<String>();
 		File folder = new File(rootFolder);
 		File[] listOfFiles = folder.listFiles();
+		
 		
 		if(listOfFiles != null) {
 			for(int i = 0; i < listOfFiles.length; i++) {
@@ -87,10 +90,12 @@ public class MoneyCounter {
 		int sum = 0;
 		
 		for(int i = 0; i < items.size(); i++) {
+			//Zagreb, EUR, 1
 			if(currencies.contains(items.get(i).get(1))) {
-				sum = values.get(currencies.indexOf(items.get(i).get(1)));
+				int index = currencies.indexOf(items.get(i).get(1));
+				sum = values.get(index);
 				sum += Integer.valueOf(items.get(i).get(2).trim());
-				values.set(currencies.indexOf(items.get(i).get(1)), sum);
+				values.set(index, sum);
 			}
 			else {
 				currencies.add(items.get(i).get(1));
